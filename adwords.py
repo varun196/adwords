@@ -1,5 +1,5 @@
 """
-Author: Varun Shah
+Author: Varun Shah (vshah)
 
 AdWords Placement Problem via Online Bipartite Graph Matching
 
@@ -77,7 +77,6 @@ def balance(interested_bidders,bidder_budget_df):
     
     Return bidder with highest unspent budget and revenue gained.
     """
-    
     interested_bidder_budget_df = find_interested_bidder_budget_df(interested_bidders,bidder_budget_df) 
     sorted_interested_bidder_budget_df = interested_bidder_budget_df.sort_values(by=["Budget","Advertiser"],ascending=[False,True])
 
@@ -180,11 +179,11 @@ def competitive_ratio(bidder_df, bidder_budget_df, queries, algo, optimal_revenu
     """
     random.seed(0)
     total_revenue = 0.0
-    permutations = 100
+    permutations = 1
+
     for i in range(permutations):
         random.shuffle(queries)
         total_revenue+=adwords(bidder_df, bidder_budget_df, queries, algo=algo)
-    
     avg_revenue = total_revenue / permutations
     ratio = avg_revenue/optimal_revenue
     return ratio
@@ -192,8 +191,10 @@ def competitive_ratio(bidder_df, bidder_budget_df, queries, algo, optimal_revenu
 def main():
     # Read data
     bidder_df, bidder_budget_df, queries = read_filter_data()
+    orig_bidder_budget_df = bidder_budget_df.copy()
     #Optimal revenue is assumed to be sum of all budgets.
     optimal_revenue = bidder_budget_df.sum(axis=0).iloc[0]
+    # print(optimal_revenue)
 
     algo=''
     if sys.argv[1] == 'greedy':
@@ -207,9 +208,8 @@ def main():
         sys.exit(0)
 
     total_revenue = adwords(bidder_df, bidder_budget_df, queries, algo=algo)
-    print(total_revenue)
-    cr = competitive_ratio(bidder_df, bidder_budget_df, queries, algo, optimal_revenue)
-    print(cr)
-
+    print(round(total_revenue,2))
+    cr = competitive_ratio(bidder_df, orig_bidder_budget_df, queries, algo, optimal_revenue)
+    print(round(cr,2))
 
 main()
