@@ -14,7 +14,9 @@ Datasets:
     advertiser_id, keyword (query), bid value, total budget
 2. queries.txt  
     query strings
-    
+
+Algorithms:  
+
 1. Greedy:  
   Tries to match query to the highest bid.  
   Works well when bids are highly skewed.  
